@@ -1,0 +1,44 @@
+# Production overrides — pull images instead of building, enable nginx TLS,
+# and harden defaults. Apply with:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  postgres:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+  redis:
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 512m
+
+  backend:
+    image: ghcr.io/your-org/recovery-platform/backend:latest
+    restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+    deploy:
+      resources:
+        limits:
+          memory: 1.5g
+        reservations:
+          memory: 1g
+
+  frontend:
+    image: ghcr.io/your-org/recovery-platform/frontend:latest
+    restart: always
+
+  nginx:
+    restart: always
+    ports:
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infra/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./infra/nginx/certs:/etc/nginx/certs:ro
