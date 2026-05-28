@@ -1,0 +1,39 @@
+# ─── OS / Editor ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# ─── Secrets / env ────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Backend (Java / Maven) ───────────────────────────────────────────────────
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+*.class
+hs_err_pid*.log
+replay_pid*.log
+
+# ─── Frontend (Node / Angular) ────────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+frontend/.nx/cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── Docker volumes (local) ───────────────────────────────────────────────────
+.docker-data/
+postgres-data/
+redis-data/
+
+# ─── Misc ─────────────────────────────────────────────────────────────────────
+*.log
+.cache/
+.tmp/
