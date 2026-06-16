@@ -5,6 +5,7 @@ import com.recovery.platform.auth.dto.LoginRequest;
 import com.recovery.platform.auth.dto.RefreshTokenRequest;
 import com.recovery.platform.auth.dto.RegisterRequest;
 import com.recovery.platform.auth.service.AuthService;
+import com.recovery.platform.common.exception.UnauthorizedException;
 import com.recovery.platform.security.annotation.CurrentUser;
 import com.recovery.platform.security.userdetails.AppUserDetails;
 import com.recovery.platform.user.dto.UserDto;
@@ -65,6 +66,7 @@ public class AuthController {
     public UserDto me(@CurrentUser AppUserDetails me) {
         return userRepository.findById(me.getId())
                 .map(userMapper::toDto)
-                .orElseThrow();
+                .orElseThrow(() -> new UnauthorizedException(
+                        "ACCOUNT_NOT_FOUND", "Authenticated account no longer exists"));
     }
 }
